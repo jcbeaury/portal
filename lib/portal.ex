@@ -16,4 +16,34 @@ defmodule Portal do
     opts = [strategy: :one_for_one, name: Portal.Supervisor]
     Supervisor.start_link(children, opts)
   end
+
+  defstruct [:left, :right]
+
+  @doc """
+  Starts transfering 'data' from 'left' to 'right'.
+  """
+  def transfer(left, right, data) do
+    # First add all data to the portal on the left
+    for item <- data do
+      Portal.Door.push(left, item)
+    end
+
+    # Returns a portal struct we will use next
+    %Portal{left: left, right: right}
+  end
+
+  @doc """
+  Pushes data to the right in the given 'portal'
+  """
+  def push_right(portal) do
+    # See if we can pop data from left. If so, push the
+    # popped data to the right. Ortherwise, do nothing
+    case Portal.Door.pop(portal.left) do
+      :error   -> :ok
+      {:ok, h} -> Portal.Door.push(portal.right, h)
+    end
+
+    # Return the portal itself
+    portal
+  end
 end
