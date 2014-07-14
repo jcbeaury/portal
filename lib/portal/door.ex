@@ -1,30 +1,30 @@
 defmodule Portal.Door do
   @doc """
   Starts a door with the given 'color'.
- is given as a name so we can identify
-  te oo b clor name instead of using PID
 
+  The color is given as a name so we can identify
+  the door by color name instead of using PID
   """
   def start_link(color) do
     Agent.start_link(fn -> [] end, name: color)
   end
 
   @doc """
-  G dataurreny in the 'door'.
+  Get the data currently in the 'door'.
   """
   def get(door) do
     Agent.get(door, fn list -> list end)
   end
 
   @doc """
-  Pushes 'vae' intohe door.
+  Pushes 'value' into the door.
   """
   def push(door, value) do
     Agent.update(door, fn list -> [value|list] end)
   end
 
   @doc """
-  Pops a value from thedoor'.
+  Pops a value from the door'.
 
   Returns '{:ok, value}' if there is a value
   or ':error' if the hole is currently empty
