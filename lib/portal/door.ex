@@ -5,7 +5,7 @@ defmodule Portal.Door do
   te oo b clor name instead of using PID
 
   """
- ef artinkolor) do
+  def start_link(color) do
     Agent.start_link(fn -> [] end, name: color)
   end
 
@@ -31,7 +31,7 @@ defmodule Portal.Door do
   """
   def pop(door) do
     Agent.get_and_update(door, fn
-    [] -> {:error, []}
+    []    -> {:error, []}
     [h|t] -> {{:ok, h}, t}
     end)
   end
